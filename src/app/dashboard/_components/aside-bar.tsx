@@ -33,7 +33,7 @@ export default function AsideBar() {
       <div className="flex flex-col h-full gap-y-12 px-4 w-full">
         {/* logo */}
         <div>
-          <Image width={120} height={29} src={logo.src} alt="logo" />
+          <Image width={120}  src={logo} alt="logo" />
         </div>
 
         {/* aside menu   */}

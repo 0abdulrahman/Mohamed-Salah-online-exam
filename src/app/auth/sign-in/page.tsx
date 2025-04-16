@@ -16,8 +16,12 @@ import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { LoginFormValues, loginSchema } from '@/lib/schemas/auth.schema';
 import MediaLogin from '../_components/media-login';
+import UseLogin from './_hooks/use-login';
 
 export default function SignInPage() {
+  // React Query mutation for login
+  const { data, error, isPending, mutate} = UseLogin();
+  // Form
   const form = useForm<LoginFormValues>({
     defaultValues: {
       email: '',
@@ -26,20 +30,11 @@ export default function SignInPage() {
     resolver: zodResolver(loginSchema),
   });
 
+  // submit form function
   const onSubmit = async (data: LoginFormValues) => {
-    const res = await signIn('credentials', {
-      redirect: false,
-      callbackUrl: '/',
-      email: data.email,
-      password: data.password,
-    });
-
-    if (res?.ok) {
-      window.location.href = '/dashboard';
-    }
-    console.error(res?.error);
+    mutate(data);
   };
-
+  
   return (
     <div className='container mx-auto flex items-center justify-center h-full w-full'>
       <div className='w-[70%]  lg:w-[80%]'>
@@ -87,7 +82,8 @@ export default function SignInPage() {
                   </FormItem>
                 )}
               />
-
+            
+             
               <Button type='submit' className='py-6 w-full  drop-shadow-[#2F1C1C1A] shadow-lg'>
                 Sign in
               </Button>
