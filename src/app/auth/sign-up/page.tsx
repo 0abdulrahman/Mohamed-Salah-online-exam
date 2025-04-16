@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+
 import {
   Form,
   FormControl,
@@ -12,15 +12,11 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import google from "../../../../public/assets/images/google.png"
-import apple from "../../../../public/assets/images/apple.png"
-import facebook from "../../../../public/assets/images/facebook.png"
-import twitter from "../../../../public/assets/images/twitter.png"
-import Image from 'next/image';
+
 import { SignupFormValues, signupSchema } from '@/lib/schemas/auth.schema';
 import { JSON_HEADER } from '@/lib/constants/api.constants';
 import { useState } from 'react';
+import MediaLogin from '../_components/media-login';
 
 
 
@@ -212,26 +208,8 @@ export default function SignUpPage() {
           </Form>
 
           {/* social media login */}
-          <div className='flex items-center justify-center space-x-4 my-8 w-full lg:w-[80%] '>
-            <div className='flex-grow border-t border-gray-400'></div>
-            <span className='text-gray-600 '>Or Continue with</span>
-            <div className='flex-grow border-t border-gray-400'></div>
-          </div>
-          {/* social media login icons  */}
-          <div className='w-full lg:w-[80%] flex items-center justify-between'>
-                <div className='border border-gray-300 size-14 md:size-16 rounded-xl flex items-center justify-center  p-2 shadow[#4461F21C] shadow-xl hover:cursor-pointer'>
-                  <Image width={23} src={google} alt="Google" />
-                </div>
-                <div className='border border-gray-300 size-14 md:size-16 rounded-xl flex items-center justify-center  p-2 shadow[#4461F21C] shadow-xl hover:cursor-pointer'>
-                <Image width={23} src={twitter} alt="Twitter" />
-                </div>
-                <div className='border border-gray-300 size-14 md:size-16 rounded-xl flex items-center justify-center  p-2 shadow[#4461F21C] shadow-xl hover:cursor-pointer'>
-                  <Image width={23} src={facebook} alt="Facebook" />
-                </div>
-                <div className='border border-gray-300 size-14 md:size-16 rounded-xl flex items-center justify-center  p-2 shadow[#4461F21C] shadow-xl hover:cursor-pointer'>
-                <Image width={23} src={apple} alt="Apple" />
-                </div>
-          </div>
+           <MediaLogin />
+          
         </div>
       </div>
     </div>

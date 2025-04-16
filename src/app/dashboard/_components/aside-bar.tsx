@@ -3,47 +3,75 @@ import Image from 'next/image';
 import logo from '../../../../public/assets/images/logo.png';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeftToLine, History, LayoutPanelLeft } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { ArrowLeftToLine, History, LayoutPanelLeft, FileText } from 'lucide-react';
+import { signOut } from 'next-auth/react';
+
+
+const items = [
+  {
+    title: 'Dashboard',
+    link: '/dashboard',
+    icon: <LayoutPanelLeft className="size-6" />,
+  },
+  {
+    title: 'Quiz History',
+    link: '/dashboard/quiz',
+    icon: <History className="size-6" />,
+  },
+  {
+    title: 'Exam',
+    link: '/dashboard/exam',
+    icon: <FileText className="size-6" />,
+  },
+];
 
 export default function AsideBar() {
   const active = usePathname();
 
   return (
-    <aside className='w-[220px] bg-white h-screen shadow-lg shadow-[#F9F9F9] rounded-sm py-5  hidden md:flex'>
-      <div className='flex flex-col h-full gap-y-12 px-4 w-full'>
+    <aside className="h-screen shadow-lg shadow-[#F9F9F9] rounded-sm py-5 hidden md:flex">
+      <div className="flex flex-col h-full gap-y-12 px-4 w-full">
+        {/* logo */}
         <div>
-          <Image width={120} height={29} src={logo.src} alt='logo' className='' />
+          <Image width={120} height={29} src={logo.src} alt="logo" />
         </div>
-        <div className='flex flex-col items-center justify-center space-y-4'>
-          <Link
-            href={'/dashboard'}
-            className={` h-11 leading-[2.75rem] rounded-lg px-2 w-full flex items-center gap-x-5
-             ${active === '/dashboard' ? 'bg-primary text-white ' : 'text-gray-600 '}`}
-          >
-            <LayoutPanelLeft
-              className={` transition-all duration-150 size-6 ${
-                active === '/dashboard' ? 'text-white' : 'text-primary'
+
+        {/* aside menu   */}
+        <div className="flex flex-col space-y-4">
+          {items.map((item) => (
+            <Link
+              key={item.link}
+              href={item.link}
+              className={`h-11 leading-[2.75rem] rounded-lg px-2 w-full flex items-center gap-x-5 transition-all duration-150
+                ${
+                active === item.link
+                  ? 'bg-primary text-white'
+                  : 'text-gray-600 hover:bg-gray-100'
               }`}
-            />
-            Dashboard
-          </Link>
-          <Link
-            href={'/dashboard/quiz'}
-            className={` h-11 leading-[2.75rem] rounded-lg px-2 w-full flex items-center gap-x-5
-                 ${active === '/dashboard/quiz' ? 'bg-primary text-white ' : 'text-gray-600 '}`}
+            >
+              <span
+                className={`transition-all duration-150 ${
+                  active === item.link ? 'text-white' : 'text-primary'
+                }`}
+              >
+                {item.icon}
+              </span>
+              <span>{item.title}</span>
+            </Link>
+          ))}
+
+          {/* logout btn     */}
+          <button
+            onClick={() =>
+              signOut({
+                callbackUrl: '/',
+              })
+            }
+            className="h-11 leading-[2.75rem] rounded-lg px-2 w-full flex items-center gap-x-5 text-gray-600 hover:bg-gray-100 transition-all duration-150"
           >
-            <History
-              className={` transition-all duration-150 size-6 ${
-                active === '/dashboard/quiz' ? 'text-white' : 'text-primary'
-              }`}
-            />
-            Quiz History
-          </Link>
-          <button className='h-11 leading-[2.75rem] rounded-lg text-gray-600 px-2 w-full flex items-center gap-x-5 justify-start'>
-            <ArrowLeftToLine className={` size-6 transition-all duration-150  text-primary`} />
-            Logout
-            </button>
+            <ArrowLeftToLine className="size-6 text-primary" />
+            <span>Logout</span>
+          </button>
         </div>
       </div>
     </aside>

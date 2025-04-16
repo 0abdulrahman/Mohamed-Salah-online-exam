@@ -1,7 +1,6 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import {
   Form,
   FormControl,
@@ -15,26 +14,19 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
-import google from '../../../../public/assets/images/google.png';
-import apple from '../../../../public/assets/images/apple.png';
-import facebook from '../../../../public/assets/images/facebook.png';
-import twitter from '../../../../public/assets/images/twitter.png';
-import Image from 'next/image';
 import { LoginFormValues, loginSchema } from '@/lib/schemas/auth.schema';
-
-
+import MediaLogin from '../_components/media-login';
 
 export default function SignInPage() {
   const form = useForm<LoginFormValues>({
-   
     defaultValues: {
       email: '',
       password: '',
     },
-     resolver: zodResolver(loginSchema),
+    resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = async (data:LoginFormValues) => {
+  const onSubmit = async (data: LoginFormValues) => {
     const res = await signIn('credentials', {
       redirect: false,
       callbackUrl: '/',
@@ -88,7 +80,7 @@ export default function SignInPage() {
                     <FormMessage />
 
                     <div className=' justify-between pt-4 text-right w-full'>
-                      <Link href='#' className='text-sm text-primary'>
+                      <Link href='/auth/forgot-password' className='text-sm text-primary'>
                         Recover Password ?
                       </Link>
                     </div>
@@ -103,26 +95,7 @@ export default function SignInPage() {
           </Form>
 
           {/* social media login */}
-          <div className='flex items-center justify-center space-x-4 my-8 w-full '>
-            <div className='flex-grow border-t border-gray-400'></div>
-            <span className='text-gray-600 '>Or Continue with</span>
-            <div className='flex-grow border-t border-gray-400'></div>
-          </div>
-          {/* social media login icons  */}
-          <div className='w-full flex items-center justify-between'>
-            <div className='border border-gray-300 size-12 md:size-14 rounded-xl flex items-center justify-center  p-2 shadow[#4461F21C] shadow-xl hover:cursor-pointer'>
-              <Image width={23} src={google} alt='Google' />
-            </div>
-            <div className='border border-gray-300 size-12 md:size-14 rounded-xl flex items-center justify-center  p-2 shadow[#4461F21C] shadow-xl hover:cursor-pointer'>
-              <Image width={23} src={twitter} alt='Twitter' />
-            </div>
-            <div className='border border-gray-300 size-12 md:size-14 rounded-xl flex items-center justify-center  p-2 shadow[#4461F21C] shadow-xl hover:cursor-pointer'>
-              <Image width={23} src={facebook} alt='Facebook' />
-            </div>
-            <div className='border border-gray-300 size-12 md:size-14 rounded-xl flex items-center justify-center  p-2 shadow[#4461F21C] shadow-xl hover:cursor-pointer'>
-              <Image width={23} src={apple} alt='Apple' />
-            </div>
-          </div>
+          <MediaLogin />
         </div>
       </div>
     </div>

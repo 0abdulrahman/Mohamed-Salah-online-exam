@@ -1,10 +1,10 @@
-import NextAuthProvider from "./components/next-auth.provider";
+import NextAuthProvider from './components/next-auth.provider';
+import ReactQueryProvider from './components/react-query.provider';
 
-
-export default function Provider({children} : any) {
- return (
+export default function Provider({ children }: any) {
+  return (
     <NextAuthProvider>
-        {children}
+      <ReactQueryProvider>{children}</ReactQueryProvider>
     </NextAuthProvider>
- )
+  );
 }

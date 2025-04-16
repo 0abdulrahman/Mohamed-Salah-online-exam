@@ -1,10 +1,11 @@
 import { z } from 'zod';
 
+// signup schema
 export const signupSchema = z
   .object({
     email: z
       .string({
-        required_error: 'Email is required'
+        required_error: 'Email is required',
       })
       .min(3, 'Email must be at least 3 characters')
       .max(50, 'Email must be at most 50 characters')
@@ -13,10 +14,10 @@ export const signupSchema = z
       .string({
         required_error: 'Password is required',
       })
-      .min(8, 'Password must be at least 8 characters')
+      .min(8, 'Password must be at least 8 characters').regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)
       .max(20, 'Password must be at most 20 characters'),
     rePassword: z.string({
-        required_error: 'Please confirm your password',
+      required_error: 'Please confirm your password',
     }),
     username: z
       .string({
@@ -48,17 +49,54 @@ export const signupSchema = z
     path: ['rePassword'],
   });
 
+// login schema
 export const loginSchema = z.object({
-  email: z.string({
-    required_error: 'Email is required',
-  }).email('Please enter a valid email'),
-  password: z.string({
-    required_error: 'Password is required',
-  }).min(8, 'Password must be at least 8 characters'),
+  email: z
+    .string({
+      required_error: 'Email is required',
+    })
+    .email('Please enter a valid email'),
+  password: z
+    .string({
+      required_error: 'Password is required',
+    })
+    .min(8, 'Password must be at least 8 characters'),
 });
 
+// forgot password schema
+export const forgotPasswordSchema = z.object({
+  email: z
+    .string({
+      required_error: 'Email is required',
+    })
+    .email('Please enter a valid email'),
+});
+
+// verify code schema
+export const verifyCodeSchema = z.object({
+  resetCode: z
+    .string({
+      required_error: 'Code is required',
+    })
+    .min(6, 'Code must be at least 6 characters'),
+});
+
+// reset password schema
+export const resetPasswordSchema = z.object({
+  email: z
+    .string({
+      required_error: 'Email is required',
+    })
+    .email('Please enter a valid email'),
+  newPassword: z
+    .string({
+      required_error: 'Password is required',
+    })
+    .min(8, 'Password must be at least 8 characters').regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/),
+});
 
 export type SignupFormValues = z.infer<typeof signupSchema>;
 export type LoginFormValues = z.infer<typeof loginSchema>;
-
-
+export type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
+export type VerifyCodeFormValues = z.infer<typeof verifyCodeSchema>;
+export type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;

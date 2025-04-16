@@ -1,20 +1,34 @@
-import { authOptions } from "@/auth"
-import { getServerSession } from "next-auth"
-import Logout from "../auth/_components/logout";
+import Link from 'next/link';
+import SubjectsList from './_components/subject-list';
+import { JSON_HEADER } from '@/lib/constants/api.constants';
+import { SubjectsResponse } from '@/lib/types/subject';
+import { getToken } from '@/utils/getToken';
 
+export default async function Dashboard() {
+  const authToken = await getToken();
 
-export default  async function Dashboard() {
-    const session = await getServerSession(authOptions)
-    // console.log(session);
-    
+  const subjects = await fetch(`${process.env.API}/subjects`, {
+    method: 'GET',
+    headers: {
+      ...JSON_HEADER,
+      token: authToken as string,
+    },
+    cache: 'no-store',
+  });
+  const subjectsData: SubjectsResponse = await subjects.json();
+
   return (
-    <div>
-      Dashboard - {session?.user.firstName}
+    <>
+      <div className='bg-white p-5 rounded-lg'>
+        <div className='flex items-center justify-between mb-8'>
+          <h2 className='text-primary font-bold'>Subjects</h2>
+          <Link href='/dashboard/subjects' className='text-primary font-bold'>
+            View All
+          </Link>
+        </div>
 
-
-      <div>
-        <Logout />
+        <SubjectsList subjects={subjectsData?.subjects} limit={6} />
       </div>
-    </div>
-  )
+    </>
+  );
 }
