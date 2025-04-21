@@ -17,7 +17,8 @@ type QuestionDialogProps = {
 
 export default async function QuestionDialog({ searchParams }: QuestionDialogProps) {
   const payload = await getQuestion(searchParams as string);
-  console.log(payload);
+  console.log('searchParams payload', searchParams);
+  
   return (
     <>
       <Dialog>
