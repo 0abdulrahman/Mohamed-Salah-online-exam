@@ -1,3 +1,4 @@
+'use client';
 import { getQuestions } from '@/lib/api/question.api';
 import { useForm } from 'react-hook-form';
 

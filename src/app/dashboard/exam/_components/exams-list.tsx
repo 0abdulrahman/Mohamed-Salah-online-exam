@@ -1,30 +1,17 @@
-'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import QuestionDialog from './questions-dialog';
 import { BookCheck } from 'lucide-react';
+import { getExams } from '@/lib/api/exam.api';
 
-async function getExamsClient() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API}/exam`);
-  const payload: APIResponse<PaginatedResponse<{ exams: Exam[] }>> = await res.json();
-  if ('code' in payload) {
-    throw new Error(payload.message);
-  }
 
-  return payload;
-}
 
-export default function ExamsList() {
-  const { data, isLoading } = useQuery({
-    queryKey: ['exams'],
-    queryFn: getExamsClient,
-  });
-
+export default async function ExamsList() {
+  const payload = await getExams();
   return (
     <div>
       <h2 className='text-2xl font-bold mb-2'>Exam</h2>
       <div className='flex flex-col gap-4 w-full'>
-        {data?.exams.map((item) => (
+        {payload?.exams.map((item) => (
           <div
             key={item._id}
             className='p-4 flex bg-white justify-between rounded-lg shadow-sm items-center w-full'
@@ -38,7 +25,7 @@ export default function ExamsList() {
             </div>
             <div className='text-center space-y-2'>
               <p className='text-sm text-gray-800 '>{item.duration} Minutes</p>
-              <QuestionDialog exam={item} />
+              <QuestionDialog searchParams={item._id} />
             </div>
           </div>
         ))}

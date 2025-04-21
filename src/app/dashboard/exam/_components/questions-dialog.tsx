@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -13,12 +13,12 @@ import { getQuestion, getQuestions } from '@/lib/api/question.api';
 import { useQuery } from '@tanstack/react-query';
 
 type QuestionDialogProps = {
-  exam: any;
+  searchParams: any;
 };
 
-export default function QuestionDialog({ exam }: QuestionDialogProps) {
+export default async function QuestionDialog({ searchParams }: QuestionDialogProps) {
   // const payload = await getQuestion(searchParams as string);
-  console.log(exam);
+  console.log(searchParams);
   return (
     <>
       <Dialog>
@@ -37,7 +37,7 @@ export default function QuestionDialog({ exam }: QuestionDialogProps) {
             </DialogDescription>
           </DialogHeader>
           {/* content */}
-          {/* <QuestionsForm exam={exam} /> */}
+          {/* <QuestionsForm questions={payload} /> */}
         </DialogContent>
       </Dialog>
     </>
