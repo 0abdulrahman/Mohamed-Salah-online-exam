@@ -17,8 +17,7 @@ export default function UseLogin() {
             return response;
         },
         onSuccess: (data) => {
-            console.log("data", data);
-            
+         
             toast.success("Login successful")
             setTimeout(() => {
                 window.location.href = '/dashboard';

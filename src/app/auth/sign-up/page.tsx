@@ -17,12 +17,12 @@ import { SignupFormValues, signupSchema } from '@/lib/schemas/auth.schema';
 import { JSON_HEADER } from '@/lib/constants/api.constants';
 import { useState } from 'react';
 import MediaLogin from '../_components/media-login';
+import UseSignUp from './_hooks/use-sign-up';
 
 
 
 export default function SignUpPage() {
-  const [error ,setError] = useState<string>('');
-  const [success ,setSuccess] = useState<string>('');
+const {signUp,error,isPending} = UseSignUp()
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -38,33 +38,9 @@ export default function SignUpPage() {
   });
 
   const onSubmit = async (value:SignupFormValues) => {
-    const resp = await fetch(`https://exam.elevateegy.com/api/v1/auth/signup`, {
-      method: 'POST',
-      headers: {
-        ...JSON_HEADER,
-      },
-      body: JSON.stringify(value),
-    })
-    const data = await resp.json();
-    console.log(data);
-    if('code' in data) {
-      setError(data.message)
-      return;
-    }
-    if('user' in data) {
-      setSuccess('Account created successfully')
-      setError('')
-      form.reset();
-      // redirect to sign in page
-      setTimeout(() => {
-        window.location.href = '/auth/sign-in';
-      }, 2000);
-      
-
-
-    }
+    signUp(value);
   };
-
+  
   return (
     <div className='container mx-auto flex items-center justify-center h-full'>
       <div className='w-[70%]  lg:w-[80%]'>
@@ -101,7 +77,7 @@ export default function SignUpPage() {
                       <Input
                         placeholder='Enter Username'
                         {...field}
-                        className={`w-full  ring-0   ${form.formState.errors.email ? 'focus:border-red-500 border-red-500 focus:ring-red-500 focus-visible:ring-0' : 'focus:border-primary border-gray-300   text-gray-600'}`}
+                        className={`w-full  ring-0   ${form.formState.errors.username ? 'focus:border-red-500 border-red-500 focus:ring-red-500 focus-visible:ring-0' : 'focus:border-primary border-gray-300   text-gray-600'}`}
                       
                       />
                     </FormControl>
@@ -119,7 +95,7 @@ export default function SignUpPage() {
                       <Input
                         placeholder='Enter firstName'
                         {...field}
-                        className={`w-full  ring-0   ${form.formState.errors.email ? 'focus:border-red-500 border-red-500 focus:ring-red-500 focus-visible:ring-0' : 'focus:border-primary border-gray-300   text-gray-600'}`}
+                        className={`w-full  ring-0   ${form.formState.errors.firstName ? 'focus:border-red-500 border-red-500 focus:ring-red-500 focus-visible:ring-0' : 'focus:border-primary border-gray-300   text-gray-600'}`}
                       
                       />
                     </FormControl>
@@ -136,7 +112,7 @@ export default function SignUpPage() {
                       <Input
                         placeholder='Enter lastName'
                         {...field}
-                        className={`w-full  ring-0   ${form.formState.errors.email ? 'focus:border-red-500 border-red-500 focus:ring-red-500 focus-visible:ring-0' : 'focus:border-primary border-gray-300   text-gray-600'}`}
+                        className={`w-full  ring-0   ${form.formState.errors.lastName ? 'focus:border-red-500 border-red-500 focus:ring-red-500 focus-visible:ring-0' : 'focus:border-primary border-gray-300   text-gray-600'}`}
                       
                       />
                     </FormControl>
@@ -153,7 +129,7 @@ export default function SignUpPage() {
                       <Input
                         placeholder='Enter phone'
                         {...field}
-                        className={`w-full  ring-0   ${form.formState.errors.email ? 'focus:border-red-500 border-red-500 focus:ring-red-500 focus-visible:ring-0' : 'focus:border-primary border-gray-300   text-gray-600'}`}
+                        className={`w-full  ring-0   ${form.formState.errors.phone ? 'focus:border-red-500 border-red-500 focus:ring-red-500 focus-visible:ring-0' : 'focus:border-primary border-gray-300   text-gray-600'}`}
                       
                       />
                     </FormControl>
@@ -171,7 +147,8 @@ export default function SignUpPage() {
                       <Input
                         placeholder='Enter password'
                         {...field}
-                        className='w-full  focus:border-primary  border border-gray-300 text-gray-600'
+                        className={`w-full  ring-0   ${form.formState.errors.password ? 'focus:border-red-500 border-red-500 focus:ring-red-500 focus-visible:ring-0' : 'focus:border-primary border-gray-300   text-gray-600'}`}
+
                       />
                     </FormControl>
                     <FormMessage />
@@ -196,13 +173,14 @@ export default function SignUpPage() {
               />
 
       {/* error message  */}
-              {error && <p className='text-red-500 text-sm'>{error}</p>}
-              {success && <p className='text-green-500 text-sm'>{success}</p>}
+              {error && <p className='text-red-500 text-sm'>{error.message}</p>}
+             
               <Button
+               
                 type='submit'
                 className='py-6 w-full   drop-shadow-[#2F1C1C1A] shadow-lg'
               >
-                Sign in
+                {isPending ? 'Loading...' : 'Sign Up'}
               </Button>
             </form>
           </Form>

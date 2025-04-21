@@ -4,16 +4,13 @@ import { useForm } from 'react-hook-form';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
 import { LoginFormValues, loginSchema } from '@/lib/schemas/auth.schema';
 import MediaLogin from '../_components/media-login';
 import UseLogin from './_hooks/use-login';
