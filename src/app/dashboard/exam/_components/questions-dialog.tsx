@@ -1,4 +1,3 @@
-"use client";
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -17,8 +16,8 @@ type QuestionDialogProps = {
 };
 
 export default async function QuestionDialog({ searchParams }: QuestionDialogProps) {
-  // const payload = await getQuestion(searchParams as string);
-  console.log(searchParams);
+  const payload = await getQuestion(searchParams as string);
+  console.log(payload);
   return (
     <>
       <Dialog>
@@ -37,7 +36,7 @@ export default async function QuestionDialog({ searchParams }: QuestionDialogPro
             </DialogDescription>
           </DialogHeader>
           {/* content */}
-          {/* <QuestionsForm questions={payload} /> */}
+          <QuestionsForm questions={payload?.questions} />
         </DialogContent>
       </Dialog>
     </>

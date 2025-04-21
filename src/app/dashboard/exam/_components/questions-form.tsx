@@ -3,18 +3,18 @@ import { getQuestions } from '@/lib/api/question.api';
 import { useForm } from 'react-hook-form';
 
 type QuestionDialogProps = {
-  questions: [];
+  questions: Question[];
 };
 
-export default async function QuestionsForm({ questions }: QuestionDialogProps) {
+export default function QuestionsForm({ questions }: QuestionDialogProps) {
   const form = useForm();
 
   return (
     <>
       <div className='flex'>hgh</div>
-      {/* <div>
-        {payload?.questions &&
-          payload?.questions.map((question) => (
+      <div>
+        {questions &&
+          questions?.map((question) => (
             <div key={question._id}>
               <h4> {question.question}</h4>
               <ul>
@@ -24,7 +24,7 @@ export default async function QuestionsForm({ questions }: QuestionDialogProps) 
               </ul>
             </div>
           ))}
-      </div> */}
+      </div>
     </>
   );
 }
