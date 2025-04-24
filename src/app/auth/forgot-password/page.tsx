@@ -24,7 +24,7 @@ export default function ForgotPassword() {
   // React Query mutation for forgot password
   const { mutate, isPending, error, data } = useMutation({
     mutationFn: async (data: ForgotPasswordFormValues) => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API}/auth/forgotPassword`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_TEST_API}/auth/forgotPassword`, {
         method: 'POST',
         headers: {
           ...JSON_HEADER,
@@ -34,7 +34,8 @@ export default function ForgotPassword() {
         }),
       });
       const payload = await res.json();
-     
+
+      console.log(payload);
 
       if (!res.ok) {
         throw new Error(payload.message || 'Failed to reset password');
@@ -49,7 +50,6 @@ export default function ForgotPassword() {
         }, 500);
       }
     },
-
   });
 
   const onSubmit = (data: ForgotPasswordFormValues) => {
@@ -78,17 +78,15 @@ export default function ForgotPassword() {
                 </FormItem>
               )}
             />
-               {/* error message */}
-            {error && (
-              <p className='text-red-500 text-sm'>{error.message}</p>
-            )}
-              {/* success message */}
+            {/* error message */}
+            {error && <p className='text-red-500 text-sm'>{error.message}</p>}
+            {/* success message */}
             {data && <p className='text-gray-500 text-sm'>{data.info}</p>}
 
-              {/* resnd code */}
-              <p className='text-gray-600 text-sm hover:text-primary hover:underline'>
-                 <Link href='/auth/sign-in'> Recover Password ?</Link>
-                </p>
+            {/* resnd code */}
+            <p className='text-gray-600 text-sm hover:text-primary hover:underline'>
+              <Link href='/auth/sign-in'> Recover Password ?</Link>
+            </p>
 
             <Button
               type='submit'

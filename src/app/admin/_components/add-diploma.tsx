@@ -1,3 +1,4 @@
+'use client';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -7,34 +8,29 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import QuestionsForm from './questions-form';
-import { getQuestion } from '@/lib/api/question.api';
-
-type QuestionDialogProps = {
-  searchParams: any;
-};
-
-export default async function QuestionDialog({ searchParams }: QuestionDialogProps) {
-  const payload = await getQuestion(searchParams as string);
- 
-
+import DiplomaForm from './diploma-form';
+import { CircleArrowLeft } from 'lucide-react';
+export default function AddDiploma() {
   return (
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button className='h-8 px-10 rounded-2xl' size={'sm'}>
-            Start
+          <Button className=' rounded-2xl' size={'lg'}>
+            Add Diploma
           </Button>
         </DialogTrigger>
-        <DialogContent className='min-h-[400px]'>
+        <DialogContent className='min-h-[130px] w-full'>
           {/* header */}
           <DialogHeader>
-            <DialogTitle className='hidden'>title</DialogTitle>
+            <DialogTitle className='flex items-center justify-start font-bold gap-2'>
+              <CircleArrowLeft className='text-primary' />
+              <span className='text-primary'> Add Diploma</span>
+            </DialogTitle>
             {/* Description */}
             <DialogDescription className='hidden'>test</DialogDescription>
           </DialogHeader>
           {/* content */}
-          <QuestionsForm questions={payload?.questions} />
+          <DiplomaForm />
         </DialogContent>
       </Dialog>
     </>

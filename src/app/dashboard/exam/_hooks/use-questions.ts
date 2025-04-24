@@ -12,7 +12,6 @@ export default function useQuestions() {
 
       const payload: APIResponse<PaginatedResponse<{ questions: Question[] }>> =
         await response.json();
-
       if ('code' in payload) {
         throw new Error(payload.message);
       }

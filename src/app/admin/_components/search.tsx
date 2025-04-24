@@ -1,7 +1,6 @@
 'use client';
 
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
+import AddDiploma from './add-diploma';
 
 export default function SearchCopmponenet() {
   return (
@@ -24,12 +24,7 @@ export default function SearchCopmponenet() {
             className='w-full h-12 pl-12 pr-4 rounded-xl shadow-lg shadow-[#0000000c] bg-white focus-visible:right-0 focus-visible:ring-0 '
           />
         </div>
-        <Button
-          variant={'default'}
-          className='h-11 px-4 rounded-xl bg-primary text-white  hover:bg-primary/80 transition-all duration-150'
-        >
-          <Link href={'/dashboard/exam'}> Start Quiz </Link>
-        </Button>
+        <AddDiploma />
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

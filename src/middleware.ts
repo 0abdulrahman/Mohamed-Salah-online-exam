@@ -1,27 +1,43 @@
-import { getToken } from "next-auth/jwt";
-import { NextRequest, NextResponse } from "next/server";
+import { getToken } from 'next-auth/jwt';
+import { NextRequest, NextResponse } from 'next/server';
 
-
-const privatePage = new Set(['/dashboard'])
-const authPage = new Set(['/auth/sign-in' , '/auth/sign-up' , '/'])
+const authPage = new Set([
+  '/auth/sign-in',
+  '/auth/sign-up',
+  '/',
+  '/auth/forgot-password',
+  '/auth/verify-code',
+  '/auth/reset-password',
+]);
 
 export default async function middleware(req: NextRequest) {
-    const token = await getToken({req})
-    
-    if(privatePage.has(req.nextUrl.pathname)){
-        if(token) return NextResponse.next();
-        
-        const redirectUrl = new URL('/',req.nextUrl.origin);
-        return NextResponse.redirect(redirectUrl)
+  const token = await getToken({ req });
+  const role = token?.user?.role;
+  const pathname = req.nextUrl.pathname;
+
+  if (authPage.has(pathname) && token) {
+    const redirectPath = role === 'admin' ? '/admin' : '/dashboard';
+    const redirectUrl = new URL(redirectPath, req.nextUrl.origin);
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  if (pathname.startsWith('/dashboard') || pathname.startsWith('/admin')) {
+    if (!token) {
+      const redirectUrl = new URL('/', req.nextUrl.origin);
+      return NextResponse.redirect(redirectUrl);
     }
 
-    if(authPage.has(req.nextUrl.pathname)){
-        if(token){
-            const redirectUrl = new URL('/dashboard',req.nextUrl.origin);
-            return NextResponse.redirect(redirectUrl)
-        }
-        return NextResponse.next()
+    if (role === 'user' && !pathname.startsWith('/dashboard')) {
+      const redirectUrl = new URL('/dashboard', req.nextUrl.origin);
+      return NextResponse.redirect(redirectUrl);
+    }
+    if (role === 'admin' && !pathname.startsWith('/admin')) {
+      const redirectUrl = new URL('/admin', req.nextUrl.origin);
+      return NextResponse.redirect(redirectUrl);
     }
 
-    return NextResponse.next()
+    return NextResponse.next();
+  }
+
+  return NextResponse.next();
 }
